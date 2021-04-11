@@ -1,6 +1,6 @@
 FROM nginx:1.19-alpine
 LABEL maintainer="Yubin <ooxxbbbbb@gmail.com>" \
-      description="Lightweight h5ai 0.30.0 container with Nginx 1.19.8 & PHP 8.0.2 based on Alpine Linux 3.13."
+      description="Lightweight h5ai 0.30.0 container with Nginx 1.19.9 & PHP 8.0.2 based on Alpine Linux 3.13."
 
 RUN apk update
 RUN apk add --no-cache \
