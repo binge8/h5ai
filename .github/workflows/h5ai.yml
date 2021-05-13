@@ -30,7 +30,7 @@ jobs:
         file: ./Dockerfile
         platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
         push: true
-        tags: bin20088/h5ai:1.19.10
+        tags: bin20088/h5ai:latest
     #- name: WeChat notification #微信推送
       #run: curl https://sc.ftqq.com/${{ secrets.ServerChan }}.send?text=H5ai推送成功-构建结束
     - name: TG notification #TG推送
