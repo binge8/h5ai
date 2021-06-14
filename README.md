@@ -1,6 +1,6 @@
 # docker-h5ai
 
-![](https://img.shields.io/badge/multiarch-amd64(x86__64)%2C%20arm64%2C%20armv7%2C%20armv6%2C%20386-lightgrey?style=flat-square)
+![](https://img.shields.io/badge/multiarch-amd64(x86__64)%2C%20arm64%2C%20armv7%2C%20armv6-lightgrey?style=flat-square)
 ![](https://img.shields.io/github/workflow/status/binge8/h5ai/h5ai?style=flat-square)
 
 ![](https://img.shields.io/docker/image-size/bin20088/h5ai/latest?style=flat-square)
@@ -26,7 +26,7 @@ And I do choose Nginx-Alpine to get the benefits from some tweaks of Nginx versi
 So this is composed of,
 
 * Alpine Linux 3.13
-* Nginx 1.19.10
+* Nginx 1.21.0
 * PHP 8.0.6
 
 with,
@@ -74,6 +74,8 @@ docker run -it --rm \
 -p 80:80 \
 -v /shared/dir:/h5ai \
 -v /config/dir:/config \
+-e PUID=$UID \
+-e PGID=$GID \
 -e TZ=Asia/Shanghai \
 bin20088/h5ai
 ```
@@ -85,6 +87,10 @@ Basically, two directories should be mapped to the host PC.
 * `/h5ai`: This will be where the shared files located.
 * `/config`: This will be where stores configurations of h5ai and Nginx settings.
 
+And you should set proper **PUID** and **PGID**. If those not set up, the default UID, GID, the number 911, will be used for the `/config` directory. Not setting PUID/PGID will not significantly affect its operations, but setting up the proper number is still recommended.
+
+Or you can handle some directories that has special permissions using these PUID/PGID.
+
 If you want to run this image as a daemon, use `-d` option. See the following command.
 
 ```bash
@@ -92,6 +98,8 @@ docker run -d --name=h5ai \
 -p 80:80 \
 -v /shared/dir:/h5ai \
 -v /config/dir:/config \
+-e PUID=$UID \
+-e PGID=$GID \
 -e TZ=Asia/Shanghai \
 bin20088/h5ai
 ```
@@ -103,6 +111,8 @@ docker run -d --name=h5ai \
 -p 80:80 \
 -v /shared/dir:/h5ai \
 -v /config/dir:/config \
+-e PUID=$UID \
+-e PGID=$GID \
 -e TZ=Asia/Shanghai \
 --restart unless-stopped \
 bin20088/h5ai
@@ -117,6 +127,8 @@ docker run -it --name=h5ai \
 -p 80:80 \
 -v /shared/dir:/h5ai \
 -v /config/dir:/config \
+-e PUID=$UID \
+-e PGID=$GID \
 -e TZ=Asia/Shanghai \
 -e HTPASSWD=true \
 -e HTPASSWD_USER=admin \
@@ -140,6 +152,8 @@ docker run -d --name=h5ai \
 -p 80:80 \
 -v /shared/dir:/h5ai \
 -v /config/dir:/config \
+-e PUID=$UID \
+-e PGID=$GID \
 -e TZ=Asia/Shanghai \
 -e HTPASSWD=true \
 -e HTPASSWD_USER=admin \
@@ -172,8 +186,15 @@ But since I don't know how much the users edit their h5ai files like layout or s
 
 If you have any good idea, please let me know. 😀
 
+## Use with HTTPS (SSL)
+
+It is highly recommended to use this web service with HTTPS for data encryption. Without SSL, the attackers can see your data streams even if you set the htpasswd to authenticate to the web page.
+
+In this image, it is not provide any HTTPS related settings but you can set HTTPS with another web server. The most frequently used thing for HTTPS is a reverse proxy server, which can be set easiliy with a docker image called [SWAG from LinuxServer.io](https://hub.docker.com/r/linuxserver/swag).
+
 ## TODOs
 
 * [x] Easy access to options.json
 * [x] Access permission using htpasswd
-* [ ] Support HTTPS - This image doesn't support SSL even if the generated cert files are preprared. But there's another way to apply SSL if you have external Let's Encrypt program and/or a reverse proxy server.
+* [x] Setup PUID/PGID to better handle the permissions
+* [ ] Expose Nginx, PHP log files to the host
