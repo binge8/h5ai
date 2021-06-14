@@ -1,6 +1,6 @@
 # docker-h5ai
 
-![](https://img.shields.io/badge/)
+![](https://img.shields.io/badge/ amd64,arm/v6,arm/v7,arm64,ppc64le,s390x.)
 ![](https://img.shields.io/github/workflow/status/binge8/h5ai/h5ai?style=flat-square)
 
 ![](https://img.shields.io/docker/image-size/bin20088/h5ai/latest?style=flat-square)
