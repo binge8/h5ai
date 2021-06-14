@@ -47,7 +47,7 @@ JIT compiler that is introduced in PHP 8 is enabled by default.
 
 ### Supports multiple architectures
 
-It builds from Github Actions for supporting multiple architectures such as 386,amd64,arm/v6,arm/v7,arm64,ppc64le,s390x.
+It builds from Github Actions for supporting multiple architectures such as amd64,arm/v6,arm/v7,arm64,ppc64le,s390x.
 
 So that you can use this on most computers supporting Docker.
 
