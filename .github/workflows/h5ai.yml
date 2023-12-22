@@ -1,0 +1,39 @@
+name: h5ai
+on:
+  repository_dispatch:
+    types: h5ai
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 0,3
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 微信推送
+      run: curl -H "Content-Type:application/json" -X POST -d '{"token":"${{ secrets.pushbot }}","title":"H5ai开始","content":"H5ai开始编译","template":"json"}' http://www.pushplus.plus/send
+    - name: Checkout
+      uses: actions/checkout@main
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@master
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@master
+    - name: Login to DockerHub
+      uses: docker/login-action@master
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push
+      uses: docker/build-push-action@master
+      with:
+        context: .
+        file: ./Dockerfile
+        platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le
+        push: true
+        tags: bin20088/h5ai:latest
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        retain_days: 8
+        keep_minimum_runs: 0
+    - name: 微信推送
+      run: curl -H "Content-Type:application/json" -X POST -d '{"token":"${{ secrets.pushbot }}","title":"H5ai成功","content":"H5ai发布成功","template":"json"}' http://www.pushplus.plus/send
