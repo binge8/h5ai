@@ -3,8 +3,8 @@ on:
   repository_dispatch:
     types: h5ai
   workflow_dispatch:
-  schedule:
-    - cron: 0 0 * * 0,3
+  #schedule:
+    #- cron: 0 0 * * 0,3
 jobs:
   build:
     runs-on: ubuntu-latest
